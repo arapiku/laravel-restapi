@@ -22,4 +22,16 @@ class ItemsController extends Controller
 
 		return response()->json($all_items);
 	}
+
+	public function show($id) {
+    	$item = Item::findById($id);
+
+    	if ($item == null) {
+    		return response()->json([
+			    'message' => 'Item not found',
+		    ], 404);
+	    }
+
+	    return response()->json($item);
+ 	}
 }

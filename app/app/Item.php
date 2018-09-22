@@ -24,4 +24,14 @@ class Item extends Model
 	public static function findByAll() {
 		return Item::all();
 	}
+
+	/**
+	 * ID検索
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public static function findById($id) {
+		return Item::find($id);
+	}
 }
