@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ItemFormRequest;
 use App\Item;
-use Illuminate\Http\Request;
 
 class ItemsController extends Controller
 {
@@ -23,6 +23,13 @@ class ItemsController extends Controller
 		return response()->json($all_items);
 	}
 
+	/**
+	 * ID検索
+	 *
+	 * @param $id
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
 	public function show($id) {
     	$item = Item::findById($id);
 
@@ -34,4 +41,16 @@ class ItemsController extends Controller
 
 	    return response()->json($item);
  	}
+
+	/**
+	 * 新規作成
+	 * @param ItemFormRequest $request
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+ 	public function store(ItemFormRequest $request) {
+		$item = Item::store($request);
+
+		return response()->json($item, 201);
+    }
 }

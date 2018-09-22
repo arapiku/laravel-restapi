@@ -34,4 +34,20 @@ class Item extends Model
 	public static function findById($id) {
 		return Item::find($id);
 	}
+
+	/**
+	 * 新規作成
+	 * @param $input
+	 *
+	 * @return mixed
+	 */
+	public static function store($input) {
+
+		$item = (new Item())->fill($input->toArray());
+
+		$item->save();
+
+		return $item;
+
+	}
 }
