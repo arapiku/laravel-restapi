@@ -2,6 +2,8 @@
 
 namespace App;
 
+use DB;
+
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -43,11 +45,50 @@ class Item extends Model
 	 */
 	public static function store($input) {
 
-		$item = (new Item())->fill($input->toArray());
+		return DB::transaction(function() use ($input) {
+			$item = (new Item())->fill($input->toArray());
 
-		$item->save();
+			$item->save();
 
-		return $item;
+			return $item;
+		});
+
+	}
+
+	/**
+	 * 更新
+	 * @param $input
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public static function updateItem($input, $id) {
+
+		return DB::transaction(function() use ($input, $id) {
+			$item = Item::findOrFail($id);
+
+			$item->update($input->toArray());
+
+			return $item;
+		});
+
+	}
+
+	/**
+	 * 削除
+	 * @param $id
+	 *
+	 * @return mixed
+	 */
+	public static function deleteItem($id) {
+
+		return DB::transaction(function() use ($id) {
+			$item = Item::findOrFail($id);
+
+			$item->delete();
+
+			return $item;
+		});
 
 	}
 }

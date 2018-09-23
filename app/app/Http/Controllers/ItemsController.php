@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ItemFormRequest;
 use App\Item;
+use Symfony\Component\HttpFoundation\Response as StatusCode;
 
 class ItemsController extends Controller
 {
@@ -17,7 +18,7 @@ class ItemsController extends Controller
 		if ($all_items->isEmpty()) {
 			return response()->json([
 				'message' => 'Item not found',
-			], 404);
+			], StatusCode::HTTP_NOT_FOUND);
 		}
 
 		return response()->json($all_items);
@@ -36,7 +37,7 @@ class ItemsController extends Controller
     	if ($item == null) {
     		return response()->json([
 			    'message' => 'Item not found',
-		    ], 404);
+		    ], StatusCode::HTTP_NOT_FOUND);
 	    }
 
 	    return response()->json($item);
@@ -51,6 +52,34 @@ class ItemsController extends Controller
  	public function store(ItemFormRequest $request) {
 		$item = Item::store($request);
 
-		return response()->json($item, 201);
+		return response()->json($item, StatusCode::HTTP_CREATED);
+    }
+
+
+	/**
+	 * 更新
+	 *
+	 * @param ItemFormRequest $request
+	 * @param $id
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+    public function update(ItemFormRequest $request, $id) {
+		$updateItem = Item::updateItem($request, $id);
+
+		return response()->json($updateItem, StatusCode::HTTP_OK);
+    }
+
+	/**
+	 * 削除
+	 *
+	 * @param $id
+	 *
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+    public function destroy($id){
+    	$item = Item::deleteItem($id);
+
+    	return response()->json($item, StatusCode::HTTP_NO_CONTENT);
     }
 }
